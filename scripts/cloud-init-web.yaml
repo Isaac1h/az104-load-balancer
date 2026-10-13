@@ -1,0 +1,13 @@
+#cloud-config
+# Exécuté au premier démarrage de chaque VM web.
+# Installe nginx et remplace la page par défaut par une page qui affiche
+# le nom de la machine : c'est ce qui permet de voir, depuis un navigateur
+# ou curl, quelle VM du pool a répondu.
+
+package_update: true
+packages:
+  - nginx
+
+runcmd:
+  - echo "<h1>$(hostname)</h1><p>Servi par $(hostname) derrière le Load Balancer</p>" > /var/www/html/index.html
+  - systemctl enable --now nginx
